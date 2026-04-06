@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1050px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -138,7 +138,12 @@ ol {
   margin-bottom: 28px;
 }
 
-.drag-source {
+.item-bank-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.drag-bank {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -147,10 +152,10 @@ ol {
   border-radius: 10px;
   background: #f9fbfd;
   margin-bottom: 14px;
-  min-height: 62px;
+  min-height: 68px;
 }
 
-.draggable-item {
+.drag-card {
   background: #ffffff;
   border: 1px solid #cbd3da;
   border-radius: 8px;
@@ -161,47 +166,63 @@ ol {
   user-select: none;
 }
 
-.draggable-item:active {
-  cursor: grabbing;
-}
-
-.drop-grid {
+.answer-area {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
   gap: 12px;
 }
 
-.drop-zone {
-  min-height: 72px;
-  background: #f4f6f8;
-  border: 2px dashed #b8c2cc;
-  border-radius: 10px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
+.answer-area-4 {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
 }
 
-.drop-zone.filled {
+.answer-box {
+  background: #f8fafc;
+  border: 1px solid #d7dee6;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.answer-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.drop-list {
+  min-height: 64px;
+  border: 2px dashed #b8c2cc;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+}
+
+.drop-list.has-item {
   border-style: solid;
   background: #eef6ff;
 }
 
-.drop-zone.drag-over {
-  background: #e3f0ff;
-  border-color: #1f5fbf;
+.sortable-ghost {
+  opacity: 0.35;
 }
 
-.drop-label {
-  color: #666;
-  font-weight: bold;
-  font-size: 13px;
-  pointer-events: none;
+.sortable-chosen {
+  cursor: grabbing;
 }
 
-.drop-zone .draggable-item {
-  width: 100%;
-  text-align: center;
+.drop-list .drag-card,
+.drag-bank .drag-card {
+  margin-bottom: 6px;
+}
+
+.drop-list .drag-card:last-child,
+.drag-bank .drag-card:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .answer-area,
+  .answer-area-4 {
+    grid-template-columns: 1fr;
+  }
 }
