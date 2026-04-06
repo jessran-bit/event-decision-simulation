@@ -30,16 +30,12 @@
           Sudden incidents will appear. Your task is to make decisions and determine whether the event should
           proceed, be adjusted, postponed, or canceled.
         </p>
-        <p>
-          This is an individual asynchronous simulation. Complete all stages and submit:
-        </p>
+        <p>This is an individual asynchronous simulation. Complete all stages and submit:</p>
         <ol>
           <li>A screenshot of your final results page</li>
           <li>Your downloaded decision log file</li>
         </ol>
-        <p>
-          At the end, include your AI disclosure if required by your instructor.
-        </p>
+        <p>At the end, include your AI disclosure if required by your instructor.</p>
       </section>
 
       <section class="card">
@@ -57,86 +53,99 @@
       <section class="card" id="planningSection">
         <h2>Stage 1: Planning</h2>
         <p class="drag-note">
-          Drag and drop the items into each box. Arrange them in order of importance or sequence.
+          Drag items from the item bank into the answer boxes. You may also reorder them inside each answer box.
         </p>
 
         <div class="planning-block">
           <h3>1. Drag your top 3 event priorities</h3>
-          <div class="drag-source" id="priorityPool">
-            <div class="draggable-item" draggable="true">Participant safety</div>
-            <div class="draggable-item" draggable="true">Continuity of program</div>
-            <div class="draggable-item" draggable="true">Clear communication</div>
-            <div class="draggable-item" draggable="true">Sponsor satisfaction</div>
-            <div class="draggable-item" draggable="true">Budget control</div>
-            <div class="draggable-item" draggable="true">On-time schedule</div>
-            <div class="draggable-item" draggable="true">Volunteer coordination</div>
-            <div class="draggable-item" draggable="true">Audience engagement</div>
+          <div class="item-bank-label">Item Bank</div>
+          <div class="drag-bank sortable-group" id="priorityBank">
+            <div class="drag-card">Participant safety</div>
+            <div class="drag-card">Continuity of program</div>
+            <div class="drag-card">Clear communication</div>
+            <div class="drag-card">Sponsor satisfaction</div>
+            <div class="drag-card">Budget control</div>
+            <div class="drag-card">On-time schedule</div>
+            <div class="drag-card">Volunteer coordination</div>
+            <div class="drag-card">Audience engagement</div>
           </div>
 
-          <div class="drop-grid">
-            <div class="drop-zone" data-group="priorities">
-              <span class="drop-label">Priority 1</span>
+          <div class="answer-area">
+            <div class="answer-box">
+              <div class="answer-label">Priority 1</div>
+              <div class="drop-list sortable-group" id="priority1" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="priorities">
-              <span class="drop-label">Priority 2</span>
+            <div class="answer-box">
+              <div class="answer-label">Priority 2</div>
+              <div class="drop-list sortable-group" id="priority2" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="priorities">
-              <span class="drop-label">Priority 3</span>
+            <div class="answer-box">
+              <div class="answer-label">Priority 3</div>
+              <div class="drop-list sortable-group" id="priority3" data-max="1"></div>
             </div>
           </div>
         </div>
 
         <div class="planning-block">
           <h3>2. Drag your top 3 risks before the event starts</h3>
-          <div class="drag-source" id="riskPool">
-            <div class="draggable-item" draggable="true">Weather disruption</div>
-            <div class="draggable-item" draggable="true">Supplier delay</div>
-            <div class="draggable-item" draggable="true">Technical failure</div>
-            <div class="draggable-item" draggable="true">Speaker cancellation</div>
-            <div class="draggable-item" draggable="true">Low volunteer turnout</div>
-            <div class="draggable-item" draggable="true">Power interruption</div>
-            <div class="draggable-item" draggable="true">Transportation delays</div>
-            <div class="draggable-item" draggable="true">Low participant attendance</div>
+          <div class="item-bank-label">Item Bank</div>
+          <div class="drag-bank sortable-group" id="riskBank">
+            <div class="drag-card">Weather disruption</div>
+            <div class="drag-card">Supplier delay</div>
+            <div class="drag-card">Technical failure</div>
+            <div class="drag-card">Speaker cancellation</div>
+            <div class="drag-card">Low volunteer turnout</div>
+            <div class="drag-card">Power interruption</div>
+            <div class="drag-card">Transportation delays</div>
+            <div class="drag-card">Low participant attendance</div>
           </div>
 
-          <div class="drop-grid">
-            <div class="drop-zone" data-group="risks">
-              <span class="drop-label">Risk 1</span>
+          <div class="answer-area">
+            <div class="answer-box">
+              <div class="answer-label">Risk 1</div>
+              <div class="drop-list sortable-group" id="risk1" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="risks">
-              <span class="drop-label">Risk 2</span>
+            <div class="answer-box">
+              <div class="answer-label">Risk 2</div>
+              <div class="drop-list sortable-group" id="risk2" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="risks">
-              <span class="drop-label">Risk 3</span>
+            <div class="answer-box">
+              <div class="answer-label">Risk 3</div>
+              <div class="drop-list sortable-group" id="risk3" data-max="1"></div>
             </div>
           </div>
         </div>
 
         <div class="planning-block">
           <h3>3. Drag your contingency actions in the order you would implement them</h3>
-          <div class="drag-source" id="contingencyPool">
-            <div class="draggable-item" draggable="true">Assess the situation immediately</div>
-            <div class="draggable-item" draggable="true">Coordinate with the core team</div>
-            <div class="draggable-item" draggable="true">Communicate with participants and stakeholders</div>
-            <div class="draggable-item" draggable="true">Activate backup suppliers or alternatives</div>
-            <div class="draggable-item" draggable="true">Adjust the program schedule</div>
-            <div class="draggable-item" draggable="true">Review safety risks</div>
-            <div class="draggable-item" draggable="true">Decide whether to continue, postpone, or cancel</div>
-            <div class="draggable-item" draggable="true">Document the incident and response</div>
+          <div class="item-bank-label">Item Bank</div>
+          <div class="drag-bank sortable-group" id="contingencyBank">
+            <div class="drag-card">Assess the situation immediately</div>
+            <div class="drag-card">Coordinate with the core team</div>
+            <div class="drag-card">Communicate with participants and stakeholders</div>
+            <div class="drag-card">Activate backup suppliers or alternatives</div>
+            <div class="drag-card">Adjust the program schedule</div>
+            <div class="drag-card">Review safety risks</div>
+            <div class="drag-card">Decide whether to continue, postpone, or cancel</div>
+            <div class="drag-card">Document the incident and response</div>
           </div>
 
-          <div class="drop-grid">
-            <div class="drop-zone" data-group="contingency">
-              <span class="drop-label">Step 1</span>
+          <div class="answer-area answer-area-4">
+            <div class="answer-box">
+              <div class="answer-label">Step 1</div>
+              <div class="drop-list sortable-group" id="cont1" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="contingency">
-              <span class="drop-label">Step 2</span>
+            <div class="answer-box">
+              <div class="answer-label">Step 2</div>
+              <div class="drop-list sortable-group" id="cont2" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="contingency">
-              <span class="drop-label">Step 3</span>
+            <div class="answer-box">
+              <div class="answer-label">Step 3</div>
+              <div class="drop-list sortable-group" id="cont3" data-max="1"></div>
             </div>
-            <div class="drop-zone" data-group="contingency">
-              <span class="drop-label">Step 4</span>
+            <div class="answer-box">
+              <div class="answer-label">Step 4</div>
+              <div class="drop-list sortable-group" id="cont4" data-max="1"></div>
             </div>
           </div>
         </div>
@@ -203,6 +212,7 @@
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
