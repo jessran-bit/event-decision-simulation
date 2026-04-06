@@ -53,13 +53,13 @@
       <section class="card" id="planningSection">
         <h2>Stage 1: Planning</h2>
         <p class="drag-note">
-          Drag items from the item bank into the answer boxes. You may also reorder them inside each answer box.
+          Drag items from each item bank into the answer boxes. One item per box.
         </p>
 
         <div class="planning-block">
           <h3>1. Drag your top 3 event priorities</h3>
           <div class="item-bank-label">Item Bank</div>
-          <div class="drag-bank sortable-group" id="priorityBank">
+          <div class="drag-bank" id="priorityBank">
             <div class="drag-card">Participant safety</div>
             <div class="drag-card">Continuity of program</div>
             <div class="drag-card">Clear communication</div>
@@ -73,15 +73,15 @@
           <div class="answer-area">
             <div class="answer-box">
               <div class="answer-label">Priority 1</div>
-              <div class="drop-list sortable-group" id="priority1" data-max="1"></div>
+              <div class="drop-list" id="priority1" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Priority 2</div>
-              <div class="drop-list sortable-group" id="priority2" data-max="1"></div>
+              <div class="drop-list" id="priority2" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Priority 3</div>
-              <div class="drop-list sortable-group" id="priority3" data-max="1"></div>
+              <div class="drop-list" id="priority3" data-max="1"></div>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@
         <div class="planning-block">
           <h3>2. Drag your top 3 risks before the event starts</h3>
           <div class="item-bank-label">Item Bank</div>
-          <div class="drag-bank sortable-group" id="riskBank">
+          <div class="drag-bank" id="riskBank">
             <div class="drag-card">Weather disruption</div>
             <div class="drag-card">Supplier delay</div>
             <div class="drag-card">Technical failure</div>
@@ -103,15 +103,15 @@
           <div class="answer-area">
             <div class="answer-box">
               <div class="answer-label">Risk 1</div>
-              <div class="drop-list sortable-group" id="risk1" data-max="1"></div>
+              <div class="drop-list" id="risk1" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Risk 2</div>
-              <div class="drop-list sortable-group" id="risk2" data-max="1"></div>
+              <div class="drop-list" id="risk2" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Risk 3</div>
-              <div class="drop-list sortable-group" id="risk3" data-max="1"></div>
+              <div class="drop-list" id="risk3" data-max="1"></div>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@
         <div class="planning-block">
           <h3>3. Drag your contingency actions in the order you would implement them</h3>
           <div class="item-bank-label">Item Bank</div>
-          <div class="drag-bank sortable-group" id="contingencyBank">
+          <div class="drag-bank" id="contingencyBank">
             <div class="drag-card">Assess the situation immediately</div>
             <div class="drag-card">Coordinate with the core team</div>
             <div class="drag-card">Communicate with participants and stakeholders</div>
@@ -133,19 +133,19 @@
           <div class="answer-area answer-area-4">
             <div class="answer-box">
               <div class="answer-label">Step 1</div>
-              <div class="drop-list sortable-group" id="cont1" data-max="1"></div>
+              <div class="drop-list" id="cont1" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Step 2</div>
-              <div class="drop-list sortable-group" id="cont2" data-max="1"></div>
+              <div class="drop-list" id="cont2" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Step 3</div>
-              <div class="drop-list sortable-group" id="cont3" data-max="1"></div>
+              <div class="drop-list" id="cont3" data-max="1"></div>
             </div>
             <div class="answer-box">
               <div class="answer-label">Step 4</div>
-              <div class="drop-list sortable-group" id="cont4" data-max="1"></div>
+              <div class="drop-list" id="cont4" data-max="1"></div>
             </div>
           </div>
         </div>
@@ -157,8 +157,18 @@
         <h2 id="incidentTitle">Incident Stage</h2>
         <p id="incidentText"></p>
 
-        <label for="decisionSelect">Your decision:</label>
-        <select id="decisionSelect"></select>
+        <div class="planning-block">
+          <h3>Drag your decision into the answer box</h3>
+          <div class="item-bank-label">Decision Options</div>
+          <div class="drag-bank" id="decisionBank"></div>
+
+          <div class="answer-area answer-area-1">
+            <div class="answer-box">
+              <div class="answer-label">Your Chosen Decision</div>
+              <div class="drop-list decision-drop" id="decisionDrop" data-max="1"></div>
+            </div>
+          </div>
+        </div>
 
         <label for="decisionReason">Justify your decision:</label>
         <textarea id="decisionReason" rows="5" placeholder="Explain why you chose this response"></textarea>
@@ -169,14 +179,23 @@
       <section class="card hidden" id="reflectionSection">
         <h2>Final Reflection and Decision</h2>
 
-        <label>Final event status</label>
-        <select id="finalStatus">
-          <option value="">Select one</option>
-          <option>Proceed as planned</option>
-          <option>Proceed with modifications</option>
-          <option>Postpone the event</option>
-          <option>Cancel the event</option>
-        </select>
+        <div class="planning-block">
+          <h3>Drag your final event status into the answer box</h3>
+          <div class="item-bank-label">Final Status Options</div>
+          <div class="drag-bank" id="finalStatusBank">
+            <div class="drag-card">Proceed as planned</div>
+            <div class="drag-card">Proceed with modifications</div>
+            <div class="drag-card">Postpone the event</div>
+            <div class="drag-card">Cancel the event</div>
+          </div>
+
+          <div class="answer-area answer-area-1">
+            <div class="answer-box">
+              <div class="answer-label">Final Event Status</div>
+              <div class="drop-list" id="finalStatusDrop" data-max="1"></div>
+            </div>
+          </div>
+        </div>
 
         <label>What was the most difficult part of your decision-making process?</label>
         <textarea id="difficulty" rows="4"></textarea>
@@ -212,7 +231,7 @@
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
