@@ -1,133 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Decision-Making Simulation</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Event Decision-Making Simulation</h1>
-      <p class="subtitle">
-        Planning to execution under uncertainty
-      </p>
-      <div class="top-bar">
-        <div class="timer-box">
-          <span>Suggested Time:</span>
-          <strong id="timer">40:00</strong>
-        </div>
-        <button id="startBtn" class="primary-btn">Start Simulation</button>
+<section class="card" id="planningSection">
+  <h2>Stage 1: Planning</h2>
+  <p class="drag-note">
+    Drag and drop the items into each box. Arrange them in order of importance or sequence.
+  </p>
+
+  <div class="planning-block">
+    <h3>1. Drag your top 3 event priorities</h3>
+    <div class="drag-source" id="priorityPool">
+      <div class="draggable-item" draggable="true">Participant safety</div>
+      <div class="draggable-item" draggable="true">Continuity of program</div>
+      <div class="draggable-item" draggable="true">Clear communication</div>
+      <div class="draggable-item" draggable="true">Sponsor satisfaction</div>
+      <div class="draggable-item" draggable="true">Budget control</div>
+      <div class="draggable-item" draggable="true">On-time schedule</div>
+      <div class="draggable-item" draggable="true">Volunteer coordination</div>
+      <div class="draggable-item" draggable="true">Audience engagement</div>
+    </div>
+
+    <div class="drop-grid">
+      <div class="drop-zone" data-group="priorities">
+        <span class="drop-label">Priority 1</span>
       </div>
-    </header>
-
-    <main id="mainContent">
-      <section class="card">
-        <h2>Instructions</h2>
-        <p>
-          You are the event manager of <strong>LeadForward 2026</strong>, a university youth leadership fair
-          with 300 expected participants. You will go through the planning, pre-event, and execution stages.
-          Sudden incidents will appear. Your task is to make decisions and determine whether the event should
-          proceed, be adjusted, postponed, or canceled.
-        </p>
-        <p>
-          This is an individual asynchronous simulation. Complete all stages and submit:
-        </p>
-        <ol>
-          <li>A screenshot of your final results page</li>
-          <li>Your downloaded decision log file</li>
-        </ol>
-        <p>
-          At the end, include your AI disclosure if required by your instructor.
-        </p>
-      </section>
-
-      <section class="card">
-        <h2>Initial Scenario</h2>
-        <ul>
-          <li>Event: LeadForward 2026 Youth Leadership Fair</li>
-          <li>Expected participants: 300</li>
-          <li>Venue: University function hall</li>
-          <li>Date: Tomorrow, 9:00 AM to 4:00 PM</li>
-          <li>Program: Registration, opening, keynote, sponsor booths, lunch, breakout sessions, closing</li>
-          <li>Resources: Fixed budget, student volunteers, partner suppliers, invited speaker, campus security</li>
-        </ul>
-      </section>
-
-      <section class="card" id="planningSection">
-        <h2>Stage 1: Planning</h2>
-        <label>1. What are your top 3 event priorities?</label>
-        <textarea id="priorities" rows="4" placeholder="Example: participant safety, continuity of program, clear communication"></textarea>
-
-        <label>2. What are your top 3 risks before the event starts?</label>
-        <textarea id="risks" rows="4" placeholder="Example: weather disruption, supplier delay, technical failure"></textarea>
-
-        <label>3. What is your contingency plan if disruptions occur?</label>
-        <textarea id="contingency" rows="4" placeholder="Write your contingency plan"></textarea>
-
-        <button class="primary-btn" onclick="savePlanning()">Save Planning Responses</button>
-      </section>
-
-      <section class="card hidden" id="incidentSection">
-        <h2 id="incidentTitle">Incident Stage</h2>
-        <p id="incidentText"></p>
-
-        <label for="decisionSelect">Your decision:</label>
-        <select id="decisionSelect"></select>
-
-        <label for="decisionReason">Justify your decision:</label>
-        <textarea id="decisionReason" rows="5" placeholder="Explain why you chose this response"></textarea>
-
-        <button class="primary-btn" onclick="submitDecision()">Submit Decision</button>
-      </section>
-
-      <section class="card hidden" id="reflectionSection">
-        <h2>Final Reflection and Decision</h2>
-
-        <label>Final event status</label>
-        <select id="finalStatus">
-          <option value="">Select one</option>
-          <option>Proceed as planned</option>
-          <option>Proceed with modifications</option>
-          <option>Postpone the event</option>
-          <option>Cancel the event</option>
-        </select>
-
-        <label>What was the most difficult part of your decision-making process?</label>
-        <textarea id="difficulty" rows="4"></textarea>
-
-        <label>What factors most influenced your final decision?</label>
-        <textarea id="factors" rows="4"></textarea>
-
-        <label>If you were given another chance, what would you improve in your event planning?</label>
-        <textarea id="improvement" rows="4"></textarea>
-
-        <label>AI Disclosure</label>
-        <textarea id="aiDisclosure" rows="3" placeholder="State whether you used AI and how you used it, if required by your instructor"></textarea>
-
-        <div class="button-row">
-          <button class="primary-btn" onclick="finishSimulation()">Finish Simulation</button>
-          <button class="secondary-btn" onclick="downloadLog()">Download Decision Log</button>
-        </div>
-      </section>
-
-      <section class="card hidden" id="resultSection">
-        <h2>Simulation Complete</h2>
-        <div id="scoreBox" class="score-box"></div>
-
-        <h3>Submission Proof</h3>
-        <ol>
-          <li>Take a screenshot of this page</li>
-          <li>Download your decision log</li>
-          <li>Submit both to your instructor or LMS</li>
-        </ol>
-
-        <div id="summaryBox" class="summary-box"></div>
-      </section>
-    </main>
+      <div class="drop-zone" data-group="priorities">
+        <span class="drop-label">Priority 2</span>
+      </div>
+      <div class="drop-zone" data-group="priorities">
+        <span class="drop-label">Priority 3</span>
+      </div>
+    </div>
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <div class="planning-block">
+    <h3>2. Drag your top 3 risks before the event starts</h3>
+    <div class="drag-source" id="riskPool">
+      <div class="draggable-item" draggable="true">Weather disruption</div>
+      <div class="draggable-item" draggable="true">Supplier delay</div>
+      <div class="draggable-item" draggable="true">Technical failure</div>
+      <div class="draggable-item" draggable="true">Speaker cancellation</div>
+      <div class="draggable-item" draggable="true">Low volunteer turnout</div>
+      <div class="draggable-item" draggable="true">Power interruption</div>
+      <div class="draggable-item" draggable="true">Transportation delays</div>
+      <div class="draggable-item" draggable="true">Low participant attendance</div>
+    </div>
+
+    <div class="drop-grid">
+      <div class="drop-zone" data-group="risks">
+        <span class="drop-label">Risk 1</span>
+      </div>
+      <div class="drop-zone" data-group="risks">
+        <span class="drop-label">Risk 2</span>
+      </div>
+      <div class="drop-zone" data-group="risks">
+        <span class="drop-label">Risk 3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="planning-block">
+    <h3>3. Drag your contingency actions in the order you would implement them</h3>
+    <div class="drag-source" id="contingencyPool">
+      <div class="draggable-item" draggable="true">Assess the situation immediately</div>
+      <div class="draggable-item" draggable="true">Coordinate with the core team</div>
+      <div class="draggable-item" draggable="true">Communicate with participants and stakeholders</div>
+      <div class="draggable-item" draggable="true">Activate backup suppliers or alternatives</div>
+      <div class="draggable-item" draggable="true">Adjust the program schedule</div>
+      <div class="draggable-item" draggable="true">Review safety risks</div>
+      <div class="draggable-item" draggable="true">Decide whether to continue, postpone, or cancel</div>
+      <div class="draggable-item" draggable="true">Document the incident and response</div>
+    </div>
+
+    <div class="drop-grid">
+      <div class="drop-zone" data-group="contingency">
+        <span class="drop-label">Step 1</span>
+      </div>
+      <div class="drop-zone" data-group="contingency">
+        <span class="drop-label">Step 2</span>
+      </div>
+      <div class="drop-zone" data-group="contingency">
+        <span class="drop-label">Step 3</span>
+      </div>
+      <div class="drop-zone" data-group="contingency">
+        <span class="drop-label">Step 4</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="primary-btn" onclick="savePlanning()">Save Planning Responses</button>
+</section>
