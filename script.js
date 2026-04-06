@@ -3,6 +3,7 @@ let currentIncident = 0;
 let score = 0;
 let timerInterval;
 let totalSeconds = 40 * 60;
+let currentDecisionSortableInstances = [];
 
 const studentLog = {
   planning: {},
@@ -53,15 +54,10 @@ const incidents = [
   }
 ];
 
-function initSortableGroups() {
-  const priorityGroup = "priority-group";
-  const riskGroup = "risk-group";
-  const contingencyGroup = "contingency-group";
-
-  const priorityLists = ["priorityBank", "priority1", "priority2", "priority3"];
-  priorityLists.forEach(id => {
+function createSortable(listIds, groupName) {
+  listIds.forEach(id => {
     new Sortable(document.getElementById(id), {
-      group: priorityGroup,
+      group: groupName,
       animation: 150,
       fallbackOnBody: true,
       swapThreshold: 0.65,
@@ -70,24 +66,44 @@ function initSortableGroups() {
       onRemove: updateDropStyles
     });
   });
+}
 
-  const riskLists = ["riskBank", "risk1", "risk2", "risk3"];
-  riskLists.forEach(id => {
-    new Sortable(document.getElementById(id), {
-      group: riskGroup,
-      animation: 150,
-      fallbackOnBody: true,
-      swapThreshold: 0.65,
-      onAdd: enforceSingleItemLimit,
-      onSort: updateDropStyles,
-      onRemove: updateDropStyles
-    });
+function initPlanningSortables() {
+  createSortable(["priorityBank", "priority1", "priority2", "priority3"], "priority-group");
+  createSortable(["riskBank", "risk1", "risk2", "risk3"], "risk-group");
+  createSortable(["contingencyBank", "cont1", "cont2", "cont3", "cont4"], "contingency-group");
+  createSortable(["finalStatusBank", "finalStatusDrop"], "final-status-group");
+  updateDropStyles();
+}
+
+function resetDecisionSortables() {
+  currentDecisionSortableInstances.forEach(instance => instance.destroy());
+  currentDecisionSortableInstances = [];
+
+  const decisionBank = document.getElementById("decisionBank");
+  const decisionDrop = document.getElementById("decisionDrop");
+  decisionBank.innerHTML = "";
+  decisionDrop.innerHTML = "";
+  updateDropStyles();
+}
+
+function initDecisionSortables(options) {
+  resetDecisionSortables();
+
+  const decisionBank = document.getElementById("decisionBank");
+
+  options.forEach(option => {
+    const card = document.createElement("div");
+    card.className = "drag-card";
+    card.textContent = option.text;
+    card.dataset.points = option.points;
+    decisionBank.appendChild(card);
   });
 
-  const contingencyLists = ["contingencyBank", "cont1", "cont2", "cont3", "cont4"];
-  contingencyLists.forEach(id => {
-    new Sortable(document.getElementById(id), {
-      group: contingencyGroup,
+  const ids = ["decisionBank", "decisionDrop"];
+  ids.forEach(id => {
+    const instance = new Sortable(document.getElementById(id), {
+      group: "decision-group",
       animation: 150,
       fallbackOnBody: true,
       swapThreshold: 0.65,
@@ -95,6 +111,7 @@ function initSortableGroups() {
       onSort: updateDropStyles,
       onRemove: updateDropStyles
     });
+    currentDecisionSortableInstances.push(instance);
   });
 
   updateDropStyles();
@@ -125,6 +142,17 @@ function updateDropStyles() {
 function getSingleItemText(id) {
   const el = document.getElementById(id);
   return el.children.length ? el.children[0].textContent.trim() : "";
+}
+
+function getSingleItemWithPoints(id) {
+  const el = document.getElementById(id);
+  if (!el.children.length) return null;
+
+  const card = el.children[0];
+  return {
+    text: card.textContent.trim(),
+    points: parseInt(card.dataset.points || "0", 10)
+  };
 }
 
 function savePlanning() {
@@ -212,39 +240,29 @@ function showIncident() {
   const incident = incidents[currentIncident];
   document.getElementById("incidentTitle").textContent = incident.title;
   document.getElementById("incidentText").textContent = incident.text;
-
-  const select = document.getElementById("decisionSelect");
-  select.innerHTML = '<option value="">Select your decision</option>';
-
-  incident.options.forEach((option, index) => {
-    const opt = document.createElement("option");
-    opt.value = index;
-    opt.textContent = option.text;
-    select.appendChild(opt);
-  });
-
   document.getElementById("decisionReason").value = "";
+
+  initDecisionSortables(incident.options);
 }
 
 function submitDecision() {
-  const decisionIndex = document.getElementById("decisionSelect").value;
+  const chosen = getSingleItemWithPoints("decisionDrop");
   const reason = document.getElementById("decisionReason").value.trim();
 
-  if (decisionIndex === "" || !reason) {
-    alert("Please select a decision and provide your justification.");
+  if (!chosen || !reason) {
+    alert("Please drag one decision into the answer box and provide your justification.");
     return;
   }
 
-  const incident = incidents[currentIncident];
-  const selectedOption = incident.options[decisionIndex];
-  score += selectedOption.points;
+  score += chosen.points;
 
+  const incident = incidents[currentIncident];
   studentLog.decisions.push({
     incident: incident.title,
     situation: incident.text,
-    decision: selectedOption.text,
+    decision: chosen.text,
     justification: reason,
-    points: selectedOption.points
+    points: chosen.points
   });
 
   currentIncident++;
@@ -257,14 +275,14 @@ function forceReflection() {
 }
 
 function finishSimulation() {
-  const finalStatus = document.getElementById("finalStatus").value;
+  const finalStatus = getSingleItemText("finalStatusDrop");
   const difficulty = document.getElementById("difficulty").value.trim();
   const factors = document.getElementById("factors").value.trim();
   const improvement = document.getElementById("improvement").value.trim();
   const aiDisclosure = document.getElementById("aiDisclosure").value.trim();
 
   if (!finalStatus || !difficulty || !factors || !improvement) {
-    alert("Please complete all final reflection fields.");
+    alert("Please complete the final drag-and-drop status and all reflection fields.");
     return;
   }
 
@@ -340,5 +358,5 @@ function downloadLog() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initSortableGroups();
+  initPlanningSortables();
 });
