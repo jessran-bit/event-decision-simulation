@@ -5,7 +5,7 @@ This is an individual asynchronous simulation on event decision-making from plan
 
 Students will:
 - review the initial event scenario
-- identify priorities, risks, and contingency plans
+- complete Stage 1 through drag-and-drop planning
 - respond to sudden incidents
 - decide whether the event should proceed, be modified, postponed, or canceled
 - complete a final reflection
@@ -16,13 +16,14 @@ Students will:
 
 ## Student Instructions
 1. Open the simulation page.
-2. Complete the planning section.
-3. Click **Start Simulation**.
-4. Respond to all incident stages.
-5. Complete the final reflection.
-6. Take a screenshot of the final results page.
-7. Download the decision log file.
-8. Submit both as proof of completion.
+2. Complete the drag-and-drop planning section.
+3. Click **Save Planning Responses**.
+4. Click **Start Simulation**.
+5. Respond to all incident stages.
+6. Complete the final reflection.
+7. Take a screenshot of the final results page.
+8. Download the decision log file.
+9. Submit both as proof of completion.
 
 ## Submission Proof
 - 1 screenshot of final results page
