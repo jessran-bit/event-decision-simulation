@@ -3,7 +3,6 @@ let currentIncident = 0;
 let score = 0;
 let timerInterval;
 let totalSeconds = 40 * 60;
-let draggedItem = null;
 
 const studentLog = {
   planning: {},
@@ -54,125 +53,102 @@ const incidents = [
   }
 ];
 
-function initializeDragAndDrop() {
-  const allItems = document.querySelectorAll(".draggable-item");
-  const dropZones = document.querySelectorAll(".drop-zone");
-  const dragSources = document.querySelectorAll(".drag-source");
+function initSortableGroups() {
+  const priorityGroup = "priority-group";
+  const riskGroup = "risk-group";
+  const contingencyGroup = "contingency-group";
 
-  allItems.forEach(item => {
-    item.addEventListener("dragstart", () => {
-      draggedItem = item;
-      setTimeout(() => {
-        item.style.opacity = "0.5";
-      }, 0);
-    });
-
-    item.addEventListener("dragend", () => {
-      item.style.opacity = "1";
-      draggedItem = null;
-      updateDropZoneStates();
+  const priorityLists = ["priorityBank", "priority1", "priority2", "priority3"];
+  priorityLists.forEach(id => {
+    new Sortable(document.getElementById(id), {
+      group: priorityGroup,
+      animation: 150,
+      fallbackOnBody: true,
+      swapThreshold: 0.65,
+      onAdd: enforceSingleItemLimit,
+      onSort: updateDropStyles,
+      onRemove: updateDropStyles
     });
   });
 
-  dropZones.forEach(zone => {
-    zone.addEventListener("dragover", e => {
-      e.preventDefault();
-      zone.classList.add("drag-over");
-    });
-
-    zone.addEventListener("dragleave", () => {
-      zone.classList.remove("drag-over");
-    });
-
-    zone.addEventListener("drop", e => {
-      e.preventDefault();
-      zone.classList.remove("drag-over");
-
-      if (!draggedItem) return;
-
-      const existingItem = zone.querySelector(".draggable-item");
-      if (existingItem) {
-        const parentSource = document.getElementById(getPoolIdByGroup(zone.dataset.group));
-        parentSource.appendChild(existingItem);
-      }
-
-      const label = zone.querySelector(".drop-label");
-      zone.innerHTML = "";
-      zone.appendChild(draggedItem);
-
-      if (!zone.querySelector(".drop-label") && label) {
-        zone.appendChild(label);
-      }
-
-      zone.classList.add("filled");
-      updateDropZoneStates();
+  const riskLists = ["riskBank", "risk1", "risk2", "risk3"];
+  riskLists.forEach(id => {
+    new Sortable(document.getElementById(id), {
+      group: riskGroup,
+      animation: 150,
+      fallbackOnBody: true,
+      swapThreshold: 0.65,
+      onAdd: enforceSingleItemLimit,
+      onSort: updateDropStyles,
+      onRemove: updateDropStyles
     });
   });
 
-  dragSources.forEach(source => {
-    source.addEventListener("dragover", e => {
-      e.preventDefault();
-    });
-
-    source.addEventListener("drop", e => {
-      e.preventDefault();
-      if (!draggedItem) return;
-      source.appendChild(draggedItem);
-      updateDropZoneStates();
+  const contingencyLists = ["contingencyBank", "cont1", "cont2", "cont3", "cont4"];
+  contingencyLists.forEach(id => {
+    new Sortable(document.getElementById(id), {
+      group: contingencyGroup,
+      animation: 150,
+      fallbackOnBody: true,
+      swapThreshold: 0.65,
+      onAdd: enforceSingleItemLimit,
+      onSort: updateDropStyles,
+      onRemove: updateDropStyles
     });
   });
 
-  updateDropZoneStates();
+  updateDropStyles();
 }
 
-function updateDropZoneStates() {
-  const zones = document.querySelectorAll(".drop-zone");
-  zones.forEach(zone => {
-    const hasItem = zone.querySelector(".draggable-item");
-    if (hasItem) {
-      zone.classList.add("filled");
-      const label = zone.querySelector(".drop-label");
-      if (label) {
-        label.style.display = "none";
-      }
+function enforceSingleItemLimit(evt) {
+  const target = evt.to;
+  const max = parseInt(target.dataset.max || "999", 10);
+
+  if (target.children.length > max) {
+    const overflowItem = target.children[target.children.length - 1];
+    evt.from.appendChild(overflowItem);
+  }
+
+  updateDropStyles();
+}
+
+function updateDropStyles() {
+  document.querySelectorAll(".drop-list").forEach(list => {
+    if (list.children.length > 0) {
+      list.classList.add("has-item");
     } else {
-      zone.classList.remove("filled");
-      const label = zone.querySelector(".drop-label");
-      if (label) {
-        label.style.display = "block";
-      }
+      list.classList.remove("has-item");
     }
   });
 }
 
-function getPoolIdByGroup(group) {
-  if (group === "priorities") return "priorityPool";
-  if (group === "risks") return "riskPool";
-  if (group === "contingency") return "contingencyPool";
-  return "";
-}
-
-function getDropZoneValues(groupName) {
-  const zones = document.querySelectorAll(`.drop-zone[data-group="${groupName}"]`);
-  const values = [];
-
-  zones.forEach(zone => {
-    const item = zone.querySelector(".draggable-item");
-    if (item) {
-      values.push(item.textContent.trim());
-    }
-  });
-
-  return values;
+function getSingleItemText(id) {
+  const el = document.getElementById(id);
+  return el.children.length ? el.children[0].textContent.trim() : "";
 }
 
 function savePlanning() {
-  const priorities = getDropZoneValues("priorities");
-  const risks = getDropZoneValues("risks");
-  const contingency = getDropZoneValues("contingency");
+  const priorities = [
+    getSingleItemText("priority1"),
+    getSingleItemText("priority2"),
+    getSingleItemText("priority3")
+  ];
 
-  if (priorities.length < 3 || risks.length < 3 || contingency.length < 4) {
-    alert("Please complete all drag-and-drop planning sections before proceeding.");
+  const risks = [
+    getSingleItemText("risk1"),
+    getSingleItemText("risk2"),
+    getSingleItemText("risk3")
+  ];
+
+  const contingency = [
+    getSingleItemText("cont1"),
+    getSingleItemText("cont2"),
+    getSingleItemText("cont3"),
+    getSingleItemText("cont4")
+  ];
+
+  if (priorities.some(v => !v) || risks.some(v => !v) || contingency.some(v => !v)) {
+    alert("Please complete all drag-and-drop planning boxes before proceeding.");
     return;
   }
 
@@ -363,4 +339,6 @@ function downloadLog() {
   URL.revokeObjectURL(url);
 }
 
-document.addEventListener("DOMContentLoaded", initializeDragAndDrop);
+document.addEventListener("DOMContentLoaded", () => {
+  initSortableGroups();
+});
