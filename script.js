@@ -3,6 +3,7 @@ let currentIncident = 0;
 let score = 0;
 let timerInterval;
 let totalSeconds = 40 * 60;
+let draggedItem = null;
 
 const studentLog = {
   planning: {},
@@ -53,8 +54,149 @@ const incidents = [
   }
 ];
 
+function initializeDragAndDrop() {
+  const allItems = document.querySelectorAll(".draggable-item");
+  const dropZones = document.querySelectorAll(".drop-zone");
+  const dragSources = document.querySelectorAll(".drag-source");
+
+  allItems.forEach(item => {
+    item.addEventListener("dragstart", () => {
+      draggedItem = item;
+      setTimeout(() => {
+        item.style.opacity = "0.5";
+      }, 0);
+    });
+
+    item.addEventListener("dragend", () => {
+      item.style.opacity = "1";
+      draggedItem = null;
+      updateDropZoneStates();
+    });
+  });
+
+  dropZones.forEach(zone => {
+    zone.addEventListener("dragover", e => {
+      e.preventDefault();
+      zone.classList.add("drag-over");
+    });
+
+    zone.addEventListener("dragleave", () => {
+      zone.classList.remove("drag-over");
+    });
+
+    zone.addEventListener("drop", e => {
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+
+      if (!draggedItem) return;
+
+      const existingItem = zone.querySelector(".draggable-item");
+      if (existingItem) {
+        const parentSource = document.getElementById(getPoolIdByGroup(zone.dataset.group));
+        parentSource.appendChild(existingItem);
+      }
+
+      const label = zone.querySelector(".drop-label");
+      zone.innerHTML = "";
+      zone.appendChild(draggedItem);
+
+      if (!zone.querySelector(".drop-label") && label) {
+        zone.appendChild(label);
+      }
+
+      zone.classList.add("filled");
+      updateDropZoneStates();
+    });
+  });
+
+  dragSources.forEach(source => {
+    source.addEventListener("dragover", e => {
+      e.preventDefault();
+    });
+
+    source.addEventListener("drop", e => {
+      e.preventDefault();
+      if (!draggedItem) return;
+      source.appendChild(draggedItem);
+      updateDropZoneStates();
+    });
+  });
+
+  updateDropZoneStates();
+}
+
+function updateDropZoneStates() {
+  const zones = document.querySelectorAll(".drop-zone");
+  zones.forEach(zone => {
+    const hasItem = zone.querySelector(".draggable-item");
+    if (hasItem) {
+      zone.classList.add("filled");
+      const label = zone.querySelector(".drop-label");
+      if (label) {
+        label.style.display = "none";
+      }
+    } else {
+      zone.classList.remove("filled");
+      const label = zone.querySelector(".drop-label");
+      if (label) {
+        label.style.display = "block";
+      }
+    }
+  });
+}
+
+function getPoolIdByGroup(group) {
+  if (group === "priorities") return "priorityPool";
+  if (group === "risks") return "riskPool";
+  if (group === "contingency") return "contingencyPool";
+  return "";
+}
+
+function getDropZoneValues(groupName) {
+  const zones = document.querySelectorAll(`.drop-zone[data-group="${groupName}"]`);
+  const values = [];
+
+  zones.forEach(zone => {
+    const item = zone.querySelector(".draggable-item");
+    if (item) {
+      values.push(item.textContent.trim());
+    }
+  });
+
+  return values;
+}
+
+function savePlanning() {
+  const priorities = getDropZoneValues("priorities");
+  const risks = getDropZoneValues("risks");
+  const contingency = getDropZoneValues("contingency");
+
+  if (priorities.length < 3 || risks.length < 3 || contingency.length < 4) {
+    alert("Please complete all drag-and-drop planning sections before proceeding.");
+    return;
+  }
+
+  studentLog.planning = {
+    priorities: priorities.join(", "),
+    risks: risks.join(", "),
+    contingency: contingency.join(" → ")
+  };
+
+  alert("Planning responses saved. Click Start Simulation to continue.");
+}
+
 function startSimulation() {
   if (started) return;
+
+  if (
+    !studentLog.planning.priorities ||
+    !studentLog.planning.risks ||
+    !studentLog.planning.contingency
+  ) {
+    alert("Please complete and save Stage 1 Planning first.");
+    return;
+  }
+
   started = true;
   document.getElementById("startBtn").disabled = true;
   startTimer();
@@ -81,35 +223,7 @@ function startTimer() {
   }, 1000);
 }
 
-function savePlanning() {
-  const priorities = document.getElementById("priorities").value.trim();
-  const risks = document.getElementById("risks").value.trim();
-  const contingency = document.getElementById("contingency").value.trim();
-
-  if (!priorities || !risks || !contingency) {
-    alert("Please complete all planning fields before proceeding.");
-    return;
-  }
-
-  studentLog.planning = {
-    priorities,
-    risks,
-    contingency
-  };
-
-  alert("Planning responses saved. Click Start Simulation to continue.");
-}
-
 function showIncident() {
-  if (
-    !studentLog.planning.priorities ||
-    !studentLog.planning.risks ||
-    !studentLog.planning.contingency
-  ) {
-    alert("Please complete and save the planning section first.");
-    return;
-  }
-
   const section = document.getElementById("incidentSection");
   section.classList.remove("hidden");
 
@@ -248,3 +362,5 @@ function downloadLog() {
 
   URL.revokeObjectURL(url);
 }
+
+document.addEventListener("DOMContentLoaded", initializeDragAndDrop);
